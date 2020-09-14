@@ -221,12 +221,12 @@ TEST_CASE("GIVEN a scaler of int64_t WHEN divided by an unit of "
 
 TEST_CASE("GIVEN a scaler of double WHEN divided by an unit of "
           "type float THEN value is implicitely converted") {
-  constexpr unit_t<'X', 1, float> v_float{2};
+  constexpr unit_t<'X', std::ratio<1>, float> v_float{2};
   constexpr double v_double{10};
   constexpr auto result = v_double / v_float;
 
-  STATIC_REQUIRE(
-      std::is_same<const unit_t<'X', -1, double>, decltype(result)>::value);
+  STATIC_REQUIRE(std::is_same<const unit_t<'X', std::ratio<-1>, double>,
+                              decltype(result)>::value);
 }
 
 TEST_CASE("GIVEN a declared unit of int32_t WHEN added to an unit of "
