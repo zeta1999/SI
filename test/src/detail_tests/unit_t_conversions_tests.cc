@@ -297,7 +297,9 @@ TEST_CASE("GIVEN to values of different type AND ratio is the same AND "
   constexpr auto result = SI::detail::cross_unit_divide<unit_Z_t>(v1, v2);
   STATIC_REQUIRE(std::is_same<decltype(result),
                               const unit_Z_t<int64_t, std::ratio<1>>>::value);
-  STATIC_REQUIRE(decltype(result)::exponent::value == 1);
+
+  STATIC_REQUIRE(std::ratio_equal<typename decltype(result)::exponent,
+                                  std::ratio<1>>::value);
 }
 
 TEST_CASE("GIVEN to values of different type AND ratio is the same "
@@ -309,7 +311,9 @@ TEST_CASE("GIVEN to values of different type AND ratio is the same "
   constexpr auto result = SI::detail::cross_unit_multiply<unit_Z_t>(v1, v2);
   STATIC_REQUIRE(std::is_same<decltype(result),
                               const unit_Z_t<int64_t, std::ratio<1>>>::value);
-  STATIC_REQUIRE(decltype(result)::exponent::value == 1);
+
+  STATIC_REQUIRE(std::ratio_equal<typename decltype(result)::exponent,
+                                  std::ratio<1>>::value);
 }
 
 TEST_CASE("GIVEN a unit with internal type of int32_t WHEN static_cast to unit "
