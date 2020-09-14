@@ -200,13 +200,14 @@ TEST_CASE(
     "fraction but does not match epsilon",
     "[unit_t][operator*]") {
 
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v1{2};
-  constexpr unit_t<'X', 1, long double, std::milli> v2{20};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v1{2};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::milli> v2{20};
 
   constexpr auto result = v1 * v2;
 
   constexpr auto expected =
-      v1 * unit_cast<unit_t<'X', 1, long double, std::ratio<1>>>(v2);
+      v1 *
+      unit_cast<unit_t<'X', std::ratio<1>, long double, std::ratio<1>>>(v2);
 
   STATIC_REQUIRE(epsEqual(result.raw_value(), 40.0L));
   STATIC_REQUIRE(result == expected);
@@ -217,7 +218,7 @@ TEST_CASE(
 TEMPLATE_TEST_CASE("GIVEN two units with different exponents WHEN divided THEN "
                    "resulting exopnent is left exponent - right exponent",
                    "[unit_t][operator/]", int64_t, long double) {
-  constexpr unit_t<'X', 3, TestType, std::ratio<1>> v1{1};
+  constexpr unit_t<'X', std::ratio<3>, TestType, std::ratio<1>> v1{1};
   constexpr unit_t<'X', std::ratio<2>, TestType, std::ratio<1>> v2{1};
 
   constexpr auto result = v1 / v2;
@@ -298,8 +299,8 @@ TEST_CASE("GIVEN two units with the same ratio exponent 1 AND internal type is "
           "is lhs.value / "
           "rhs.value",
           "[unit_t][operator/]") {
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v1{1000};
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v2{10};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v1{1000};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v2{10};
   constexpr auto result = v1 / v2;
 
   STATIC_REQUIRE(std::is_same<std::remove_const<decltype(result)>::type,
@@ -334,7 +335,7 @@ TEST_CASE("GIVEN a unit with ratio<1> and a scalar AND internal type is "
           "unit THEN resulting  value is scalar / unit.value",
           "[unit_t][operator/]") {
   constexpr long double v1 = 1000.0L;
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v2{2};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v2{2};
   constexpr auto result = v1 / v2;
 
   STATIC_REQUIRE(epsEqual(result.raw_value(), 500.0L));
@@ -360,7 +361,7 @@ TEST_CASE("GIVEN a unit with ratio<1, 1000> and a scalar AND interal type is "
           "by unit THEN resulting value is adjusted by ratio",
           "[unit_t][operator/]") {
   constexpr long double v1{1000};
-  constexpr unit_t<'X', 1, long double, std::deca> v2{2};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::deca> v2{2};
 
   constexpr auto result = v1 / v2;
   constexpr unit_t<'X', -1, long double, std::deca> expected{5};
@@ -449,8 +450,8 @@ TEST_CASE("GIVEN two units with floating point types with value difference of "
           "epsilon WHEN compared for equality"
           "THEN result is false",
           "[unit_t][operator==]") {
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v1{0};
-  constexpr unit_t<'X', 1, long double, std::ratio<1>> v2{
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v1{0};
+  constexpr unit_t<'X', std::ratio<1>, long double, std::ratio<1>> v2{
       std::numeric_limits<long double>::epsilon()};
 
   STATIC_REQUIRE(v1 != v2);
