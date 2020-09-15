@@ -2,6 +2,7 @@
 
 ## 1.7.6
 
+*   Update to catch2 2.13.1 and retrieving it from ConanCenter
 *   Refactoring conanfile.py to create cmake object only once for a tiny bit more performance when packing
 
 ## 1.7.5

@@ -1,6 +1,7 @@
 from conans import ConanFile, CMake
 from conans.tools import load
-import re, os
+import re
+import os
 
 
 class SiConan(ConanFile):
@@ -15,7 +16,7 @@ class SiConan(ConanFile):
     exports_sources = "include/*", "CMakeLists.txt", "test/*", "doc/CMakeLists.txt", "doc/*.md", "cmake/SIConfig.cmake.in", "LICENSE"
     no_copy_source = True
     generators = "cmake", "txt", "cmake_find_package"
-    build_requires = "Catch2/2.11.1@catchorg/stable"
+    build_requires = "catch2/2.13.1"
     _cmake = None
 
     def _configure_cmake(self):
@@ -27,10 +28,10 @@ class SiConan(ConanFile):
 
     def set_version(self):
         cmake = load(os.path.join(self.recipe_folder, "CMakeLists.txt"))
-        
-        version = re.search(r"(?:[ \t]*)(?:VERSION\s+?)(\d+\.\d+\.\d+)", cmake).group(1)
-        self.version = version
 
+        version = re.search(
+            r"(?:[ \t]*)(?:VERSION\s+?)(\d+\.\d+\.\d+)", cmake).group(1)
+        self.version = version
 
     def build(self):
         cmake = self._configure_cmake()
