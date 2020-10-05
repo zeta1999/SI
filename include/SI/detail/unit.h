@@ -22,12 +22,11 @@
 #include <ratio>
 #include <type_traits>
 
-namespace SI::detail
-{
-  // fwd declaration
-  template <char _symbol, typename _exponent, typename _type,
-          typename _ratio> struct unit_t;
-}
+namespace SI::detail {
+// fwd declaration
+template <char _symbol, typename _exponent, typename _type, typename _ratio>
+struct unit_t;
+} // namespace SI::detail
 
 // forward declaration
 template <char _symbol, typename _exponent, typename _type, typename _ratio>
@@ -118,7 +117,9 @@ struct unit_t {
   /// returns the stored value as raw type
   constexpr _type value() const { return value_; }
 
+  // clang-format off
   friend std::istream &operator>> <>(std::istream &stream, unit_t &);
+  // clang-format on
 
   /// Assignment for same ratio
   constexpr unit_t &operator=(const unit_t &rhs) = default;
