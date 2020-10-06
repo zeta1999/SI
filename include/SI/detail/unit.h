@@ -120,7 +120,7 @@ struct unit_t {
   constexpr _type value() const { return value_; }
 
   // clang-format off
-  friend std::istream& operator>> <_symbol, _exponent, _type, _ratio>(std::istream &stream, unit_t &obj);
+  friend std::istream& operator>> <>(std::istream &stream, unit_t<_symbol, _exponent, _type, _ratio> &obj);
   // clang-format on
 
   /// Assignment for same ratio
