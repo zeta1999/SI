@@ -19,6 +19,7 @@
 
 #include "detail.h"
 
+#include <istream>
 #include <ratio>
 #include <type_traits>
 
