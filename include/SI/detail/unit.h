@@ -30,10 +30,11 @@ struct unit_t;
 } // namespace SI::detail
 
 // forward declaration
+// clang-format off
 template <char _symbol, typename _exponent, typename _type, typename _ratio>
-std::istream &
-operator>>(std::istream &stream,
-           SI::detail::unit_t<_symbol, _exponent, _type, _ratio> &obj);
+std::istream& operator>>(std::istream &stream, SI::detail::unit_t<_symbol, _exponent, _type, _ratio> &obj);
+
+// clang-format on 
 
 /// Namespace containing all SI units
 namespace SI::detail {
