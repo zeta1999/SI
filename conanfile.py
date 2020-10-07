@@ -1,5 +1,6 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 from conans.tools import load
+from conans.errors import ConanInvalidConfiguration
 import re, os
 
 
@@ -15,6 +16,7 @@ class SiConan(ConanFile):
     exports_sources = "include/*", "CMakeLists.txt", "test/*", "doc/CMakeLists.txt", "doc/*.md", "cmake/SIConfig.cmake.in", "LICENSE"
     no_copy_source = True
     generators = "cmake", "txt", "cmake_find_package"
+    settings = "os", "arch", "compiler", "build_type"
     build_requires = "Catch2/2.11.1@catchorg/stable"
     _cmake = None
 
@@ -24,6 +26,28 @@ class SiConan(ConanFile):
             # Add additional settings with cmake.definitions["SOME_DEFINITION"] = True
             self._cmake.configure()
         return self._cmake
+
+    @property
+    def _compilers_minimum_version(self):
+        return {
+            "gcc": "7",
+            "Visual Studio": "15",
+            "clang": "5",
+            "apple-clang": "10",
+        }
+
+    def configure(self):
+        if self.settings.compiler.get_safe("cppstd"):
+            tools.check_min_cppstd(self, "17")
+        minimum_version = self._compilers_minimum_version.get(
+            str(self.settings.compiler), False)
+        if minimum_version:
+            if tools.Version(self.settings.compiler.version) < minimum_version:
+                raise ConanInvalidConfiguration("bertrand requires C++17, which your compiler ({} {}) does not support.".format(
+                    self.settings.compiler, self.settings.compiler.version))
+        else:
+            self.output.warn(
+                "SI requires C++17. Your compiler is unknown. Assuming it supports C++17.")        
 
     def set_version(self):
         cmake = load(os.path.join(self.recipe_folder, "CMakeLists.txt"))
